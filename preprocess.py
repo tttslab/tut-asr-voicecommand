@@ -13,12 +13,13 @@ logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser()
 parser.add_argument('--MFCC_DIM',      type=int, default=13)                           # input mfcc dim
 parser.add_argument('--WAVE_DIR',      type=str)   # Top directory of speech_commands
-parser.add_argument('--OUT_DIR',      type=str)   # output
+parser.add_argument('--TXT_DIR',      type=str)   # txt(listfile) output
+parser.add_argument('--MFCC_DIR',      type=str)   # mfcc output
 args = parser.parse_args()
 
 wavedir       = args.WAVE_DIR + "/"
-txtdir        = args.OUT_DIR + "/"
-mfccdir       = args.OUT_DIR + "/mfcc/"
+txtdir        = args.TXT_DIR + "/"
+mfccdir       = args.MFCC_DIR + "/"
 datalist      = ['yes', 'no', 'up', 'down', 'left', 'right', 'on', 'off', 'stop', 'go']
 SAMPLING_RATE = 16000
 MFCC_DIM      = args.MFCC_DIM
@@ -78,7 +79,7 @@ os.makedirs(txtdir, exist_ok=True)
 os.makedirs(mfccdir, exist_ok=True)
 training_list   = open(txtdir+'train.txt',   'a')
 testing_list    = open(txtdir+'eval.txt',    'a')
-validation_list = open(txtdir+'valid.txt', 'a')
+validation_list = open(txtdir+'valid.txt',   'a')
 for command in datalist:
     if os.path.exists(mfccdir+command):     # check if data exist. if true, skip feature generation, 
         logging.info(command+' data is already prepared')

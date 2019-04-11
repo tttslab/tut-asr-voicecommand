@@ -13,7 +13,7 @@ if [ -e $DATA_ROOT/done ]; then
 fi
 
 ./data_download.sh $DATA_ROOT/wave || exit 1
-python preprocess.py --WAVE_DIR $DATA_ROOT/wave --OUT_DIR $DATA_ROOT || exit 1
+python preprocess.py --WAVE_DIR $DATA_ROOT/wave --TXT_DIR $DATA_ROOT --MFCC_DIR $DATA_ROOT/mfcc || exit 1
 
 shuf $DATA_ROOT/train.txt | split -n l/1/5 - $DATA_ROOT/train20.txt
 cat $DATA_ROOT/train.txt | shuf -o $DATA_ROOT/train.txt
