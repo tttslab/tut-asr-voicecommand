@@ -9,7 +9,6 @@ import os
 import logging
 import argparse
 
-home_dir = os.path.expanduser('~')
 logging.basicConfig(level=logging.INFO)
 
 # Parameter setting
@@ -20,6 +19,9 @@ parser.add_argument('--HIDDEN_SIZE', type=int, default=128)            # unit nu
 parser.add_argument('--NUM_STACK',   type=int, default=5)              # number of layers
 parser.add_argument('--USE_CMVN',    action='store_true')              # whether applying CMVN, default is False
 parser.add_argument('--BATCH_SIZE',  type=int, default=256)
+parser.add_argument('--PARAM_FILE',  type=str)                         # parameter of trained model
+parser.add_argument('--EVAL_LIST',  type=str)                          # evaluation file list
+parser.add_argument('--MFCC_ROOT',  type=str)                          # root path of mfcc feature files
 args = parser.parse_args()
 
 IN_SIZE       = args.IN_SIZE
@@ -28,12 +30,15 @@ HIDDEN_SIZE   = args.HIDDEN_SIZE
 NUM_STACK     = args.NUM_STACK
 USE_CMVN      = args.USE_CMVN
 BATCH_SIZE    = args.BATCH_SIZE
+PARAM_FILE    = args.PARAM_FILE
+EVAL_LIST     = args.EVAL_LIST
+MFCC_ROOT     = args.MFCC_ROOT
 
 # Build up model and batch generator
 device      = 'cuda' if torch.cuda.is_available() else 'cpu'   # check available gpu
 model       = models.Classifier(IN_SIZE, NUM_CLASS, HIDDEN_SIZE, NUM_STACK, 0.0).to(device) # build model (same structure as trained model)
-model.load_state_dict(torch.load(home_dir + '/e2e_asr/model/speech_commands.model')) # load parameters from trained model
-batch_test  = utils.Batch_generator('testing',    BATCH_SIZE) # data batch generator for evaluation data
+model.load_state_dict(torch.load(PARAM_FILE)) # load parameters from trained model
+batch_test  = utils.Batch_generator(MFCC_ROOT, EVAL_LIST, BATCH_SIZE) # data batch generator for evaluation data
 
 # Print out setting
 logging.info('Batch_size: {}'.format(BATCH_SIZE))
@@ -58,6 +63,9 @@ with torch.no_grad(): # disable gradient calculation, reduce memory consumption
         total_num   += len(outputs)
         correct_num += torch.bincount(torch.abs(torch.argmax(outputs, dim=1) - labels))[0] # compute the number of corrected prediction
         if epoch == 2: break
-    logging.info('accuracy: {:.04f}'.format(correct_num.float() / total_num))
+    score = correct_num.float() / total_num
+    logging.info('accuracy: {:.04f}'.format(score))
+    with open('score.txt', 'w') as f:
+        f.write('recognition rate = {:.1%}\n'.format(score))
 
 logging.info('done')
