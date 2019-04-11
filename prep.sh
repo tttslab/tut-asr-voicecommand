@@ -12,9 +12,10 @@ if [ -e $DATA_ROOT/done ]; then
 	exit 0
 fi
 
-./data_download.sh $DATA_ROOT/wave || exit 1
-python preprocess.py --WAVE_DIR $DATA_ROOT/wave --TXT_DIR $DATA_ROOT --MFCC_DIR $DATA_ROOT/mfcc || exit 1
+./data_download.sh $DATA_ROOT/wave || exit 1 ## Download speech_commands dataset
+python preprocess.py --WAVE_DIR $DATA_ROOT/wave --TXT_DIR $DATA_ROOT --MFCC_DIR $DATA_ROOT/mfcc || exit 1 ## Generate MFCC feature (set as stage0 later)
 
+#shuffle and separate training file list
 shuf $DATA_ROOT/train.txt | split -n l/1/5 - $DATA_ROOT/train20.txt
 cat $DATA_ROOT/train.txt | shuf -o $DATA_ROOT/train.txt
 head -n $((1*`cat data/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train20.txt

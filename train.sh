@@ -22,5 +22,6 @@ python train.py \
 	--TRAIN_LIST $TRAIN_LIST \
 	--VALID_LIST $VALID_LIST \
 	--SAVE_FILE $MODEL_DIR/trained.model \
-	|| exit 1
+	--MAX_EPOCH=100 \
+	|| exit 1 ## Train NN
 touch $MODEL_DIR/done

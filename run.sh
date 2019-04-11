@@ -1,13 +1,15 @@
 #!/bin/sh
 
-echo 'start'
+DATA_ROOT=data
+MODEL_DIR=model
+
+echo 'start preparing'
 date
-#./data_download.sh ## Download speech_commands dataset
-python ./preprocess.py  ## Generate MFCC feature (set as stage0 later)
+./prep.sh $DATA_ROOT >& prep.log
 echo 'start training'
 date
-python ./train.py --MAX_EPOCH=100 ## Train NN 
-echo 'start eval'
+./train.sh $MODEL_DIR $DATA_ROOT train.txt >& train.log
+echo 'start evaluating'
 date
-python ./eval.py
+./eval.sh $MODEL_DIR $DATA_ROOT eval.txt >& eval.log
 date
