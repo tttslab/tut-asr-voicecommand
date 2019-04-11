@@ -17,7 +17,8 @@ parser.add_argument('--OUT_DIR',      type=str)   # output
 args = parser.parse_args()
 
 wavedir       = args.WAVE_DIR + "/"
-outdir        = args.OUT_DIR + "/"
+txtdir        = args.OUT_DIR + "/"
+mfccdir       = args.OUT_DIR + "/mfcc/"
 datalist      = ['yes', 'no', 'up', 'down', 'left', 'right', 'on', 'off', 'stop', 'go']
 SAMPLING_RATE = 16000
 MFCC_DIM      = args.MFCC_DIM
@@ -73,21 +74,22 @@ def which_set(filename, validation_percentage, testing_percentage):
 
 
 logging.info('Start making mfcc')
-os.makedirs(outdir, exist_ok=True)
-training_list   = open(outdir+'training_list.txt',   'a')
-testing_list    = open(outdir+'testing_list.txt',    'a')
-validation_list = open(outdir+'validation_list.txt', 'a')
+os.makedirs(txtdir, exist_ok=True)
+os.makedirs(mfccdir, exist_ok=True)
+training_list   = open(txtdir+'train.txt',   'a')
+testing_list    = open(txtdir+'eval.txt',    'a')
+validation_list = open(txtdir+'valid.txt', 'a')
 for command in datalist:
-    if os.path.exists(outdir+command):     # check if data exist. if true, skip feature generation, 
+    if os.path.exists(mfccdir+command):     # check if data exist. if true, skip feature generation, 
         logging.info(command+' data is already prepared')
     else:
         logging.info('Processing `'+command+'`... ')
-        os.makedirs(outdir+command)        
+        os.makedirs(mfccdir+command)        
         for wavfile in os.listdir(wavedir+command):
             audio, sr = librosa.load(wavedir+command+'/'+wavfile, sr=SAMPLING_RATE)  # load wav file and get its sampling rate
             mfcc      = librosa.feature.mfcc(audio, sr=SAMPLING_RATE, n_mfcc=MFCC_DIM, n_fft=400, hop_length=160)  # extract mfcc feature 
             mfcc      = np.asarray(mfcc, dtype=np.float32)  # change format to np.float32
-            np.save(outdir+command+'/'+wavfile[:-4]+'.npy', mfcc.T)  # save mfcc features
+            np.save(mfccdir+command+'/'+wavfile[:-4]+'.npy', mfcc.T)  # save mfcc features
             partition = which_set(wavfile, 10, 10)  # divide to "training", "validation", "testing" 3 parts
             if partition == 'training':
                 training_list.write(command+'/'+wavfile[:-4]+'.npy\n')
