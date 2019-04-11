@@ -8,5 +8,5 @@ fi
 DATA_DIR=${1%/}
 
 mkdir -p $DATA_DIR
-wget http://download.tensorflow.org/data/speech_commands_v0.02.tar.gz -O $DATA_DIR.tar.gz
-pv $DATA_DIR.tar.gz | tar xzf - -C $DATA_DIR
+wget -q http://download.tensorflow.org/data/speech_commands_v0.02.tar.gz -O $DATA_DIR.tar.gz
+tar xzf $DATA_DIR.tar.gz -C $DATA_DIR
