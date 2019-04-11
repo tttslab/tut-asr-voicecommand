@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export PATH="/gs/hs0/tga-egliteracy/egs/e2e-asr/miniconda3/bin:$PATH"  ## Use miniconda virtual env
 #$ -cwd                      ## Execute a job in current directory

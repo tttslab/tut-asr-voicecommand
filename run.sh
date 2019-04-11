@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DATA_ROOT=data
 MODEL_DIR=model
