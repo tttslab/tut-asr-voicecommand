@@ -6,18 +6,18 @@ import hashlib
 import logging
 import argparse
 
-home_dir = os.path.expanduser('~')
 logging.basicConfig(level=logging.INFO)
 
 # Parameter setting
 # example of tuning by argparser: python train.py --MFCC_DIM=40
 parser = argparse.ArgumentParser()
 parser.add_argument('--MFCC_DIM',      type=int, default=13)                           # input mfcc dim
-parser.add_argument('--WAVE_DIR',      type=str, default='/gs/hs0/tga-egliteracy/egs/e2e-asr/speech_commands/')   # Top directory of speech_commands
+parser.add_argument('--WAVE_DIR',      type=str)   # Top directory of speech_commands
+parser.add_argument('--OUT_DIR',      type=str)   # output
 args = parser.parse_args()
 
-wavedir       = args.WAVE_DIR
-outdir        = home_dir + '/e2e_asr/mfcc/'
+wavedir       = args.WAVE_DIR + "/"
+outdir        = args.OUT_DIR + "/"
 datalist      = ['yes', 'no', 'up', 'down', 'left', 'right', 'on', 'off', 'stop', 'go']
 SAMPLING_RATE = 16000
 MFCC_DIM      = args.MFCC_DIM
