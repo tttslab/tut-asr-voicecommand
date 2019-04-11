@@ -3,8 +3,6 @@ import numpy as np
 import random
 import os
 
-home_dir = os.path.expanduser('~') # generated data will be store in ur home dir
-OUTDIR         = home_dir + '/e2e_asr/mfcc/'
 command_list   = ['yes', 'no', 'up', 'down', 'left', 'right', 'on', 'off', 'stop', 'go']
 
 def Apply_cmvn(inputs): # apply cepstral mean and variance normalization
@@ -21,14 +19,9 @@ def insert_index_descending_order(query, num_list):
         return num_list.index(matching_list[0])
     
 
-def Batch_generator(dataset, batch_size): # data batch generator
-    # choose data type (training, testing, validation)
-    if dataset == 'training':
-        datalist_txt = open(OUTDIR+'training_list.txt', 'r')
-    elif dataset == 'testing':
-        datalist_txt = open(OUTDIR+'testing_list.txt', 'r')
-    elif dataset == 'validation':
-        datalist_txt = open(OUTDIR+'validation_list.txt', 'r')
+def Batch_generator(mfcc_root, dataset, batch_size): # data batch generator
+    datalist_txt = open(dataset, 'r')
+    OUTDIR = mfcc_root + '/'
 
     datalist      = datalist_txt.read().strip().split('\n')
     shuffled_data = random.sample(datalist, len(datalist))

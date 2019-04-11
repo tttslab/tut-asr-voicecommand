@@ -9,7 +9,6 @@ import os
 import logging
 import argparse
 
-home_dir = os.path.expanduser('~')
 logging.basicConfig(level=logging.INFO)
 
 # Parameter setting
@@ -23,6 +22,10 @@ parser.add_argument('--USE_CMVN',    action='store_true')              # whether
 parser.add_argument('--MAX_ITERATION', type=int, default=1000000)
 parser.add_argument('--MAX_EPOCH',   type=int, default=5)
 parser.add_argument('--BATCH_SIZE',  type=int, default=256)
+parser.add_argument('--SAVE_FILE',   type=str)                         # save file of trained model's parameter
+parser.add_argument('--MFCC_ROOT',  type=str)                          # root path of mfcc feature files
+parser.add_argument('--TRAIN_LIST',  type=str)                         # training file list
+parser.add_argument('--VALID_LIST',  type=str)                         # validation file list
 args = parser.parse_args()
 
 IN_SIZE       = args.IN_SIZE
@@ -34,15 +37,18 @@ USE_CMVN      = args.USE_CMVN
 MAX_ITERATION = args.MAX_ITERATION
 MAX_EPOCH     = args.MAX_EPOCH
 BATCH_SIZE    = args.BATCH_SIZE
+MFCC_ROOT     = args.MFCC_ROOT
+TRAIN_LIST    = args.TRAIN_LIST
+VALID_LIST    = args.VALID_LIST
+SAVE_FILE     = args.SAVE_FILE
 
 # Build up model and batch generator
 device      = 'cuda' if torch.cuda.is_available() else 'cpu'  # check available gpu
 model       = models.Classifier(IN_SIZE, NUM_CLASS, HIDDEN_SIZE, NUM_STACK, DROPOUT).to(device) # build up model
 loss_fun    = nn.CrossEntropyLoss() # define CE as loss function (objective function)
 optimizer   = torch.optim.Adam(model.parameters()) # define optimizer (choosed adam here, you can try others as well)
-batch_train = utils.Batch_generator('training',   BATCH_SIZE) # batch generator
-batch_test  = utils.Batch_generator('testing',    BATCH_SIZE)
-batch_valid = utils.Batch_generator('validation', BATCH_SIZE)
+batch_train = utils.Batch_generator(MFCC_ROOT, TRAIN_LIST, BATCH_SIZE) # batch generator
+batch_valid = utils.Batch_generator(MFCC_ROOT, VALID_LIST, BATCH_SIZE)
 
 # print out settings
 logging.info('Batch_size: {}'.format(BATCH_SIZE))
@@ -106,5 +112,4 @@ for iteration in range(1, MAX_ITERATION+1):
         break
 
 logging.info('done')
-os.makedirs(home_dir + '/e2e_asr/model', exist_ok=True) # make dir for model saving
-torch.save(model.state_dict(), home_dir + '/e2e_asr/model/speech_commands.model') # save trained model
+torch.save(model.state_dict(), SAVE_FILE) # save trained model
