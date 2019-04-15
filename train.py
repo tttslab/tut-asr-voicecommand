@@ -112,10 +112,10 @@ for iteration in range(1, MAX_ITERATION+1):
     if MAX_EPOCH < now_epoch:
         break
 
-plt.plot(epoch_plt, acc_plt, "ro-")
-plt.xlabel("epoch")
-plt.ylabel("accuracy")
-plt.savefig("result.png")
+#plt.plot(epoch_plt, acc_plt, "ro-")
+#plt.xlabel("epoch")
+#plt.ylabel("accuracy")
+#plt.savefig("result.png")
 
 logging.info('done')
 os.makedirs(home_dir + '/e2e_asr/model', exist_ok=True) # make dir for model saving
