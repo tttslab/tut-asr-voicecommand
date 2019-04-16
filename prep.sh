@@ -15,6 +15,8 @@ fi
 ./data_download.sh $DATA_ROOT/wave || exit 1 ## Download speech_commands dataset
 python preprocess.py --WAVE_DIR $DATA_ROOT/wave --TXT_DIR $DATA_ROOT --MFCC_DIR $DATA_ROOT/mfcc || exit 1 ## Generate MFCC feature (set as stage0 later)
 
+awk 'NR%10==0' $DATA_ROOT/valid.txt > $DATA_ROOT/valid10.txt
+
 #shuffle and separate training file list
 cat $DATA_ROOT/train.txt | shuf -o $DATA_ROOT/train.txt
 head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/100)) $DATA_ROOT/train.txt > $DATA_ROOT/train1.txt

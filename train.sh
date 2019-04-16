@@ -9,7 +9,7 @@ MODEL_DIR=${1%/}
 DATA_ROOT=${2%/}
 MFCC_ROOT=$DATA_ROOT/mfcc
 TRAIN_LIST=$DATA_ROOT/$3
-VALID_LIST=$DATA_ROOT/valid.txt
+VALID_LIST=$DATA_ROOT/valid10.txt
 
 if [ -e $MODEL_DIR/done ]; then
 	echo "model is already trained. Skip"
