@@ -13,11 +13,9 @@ date
 start_time=`date +%s`
 
 
-./train.sh $MODEL_DIR $DATA_ROOT train2.txt >& train.log
+./train.sh $MODEL_DIR $DATA_ROOT train1.txt >& train.log
 #./train.sh $MODEL_DIR $DATA_ROOT train20.txt >& train.log
-#./train.sh $MODEL_DIR $DATA_ROOT train40.txt >& train.log
 #./train.sh $MODEL_DIR $DATA_ROOT train60.txt >& train.log
-#./train.sh $MODEL_DIR $DATA_ROOT train80.txt >& train.log
 #./train.sh $MODEL_DIR $DATA_ROOT train.txt >& train.log
 
 end_time=`date +%s`

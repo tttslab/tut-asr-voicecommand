@@ -17,10 +17,8 @@ python preprocess.py --WAVE_DIR $DATA_ROOT/wave --TXT_DIR $DATA_ROOT --MFCC_DIR 
 
 #shuffle and separate training file list
 cat $DATA_ROOT/train.txt | shuf -o $DATA_ROOT/train.txt
-head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/50)) $DATA_ROOT/train.txt > $DATA_ROOT/train2.txt
+head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/100)) $DATA_ROOT/train.txt > $DATA_ROOT/train1.txt
 head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train20.txt
-head -n $((2*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train40.txt
 head -n $((3*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train60.txt
-head -n $((4*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train80.txt
 
 touch $DATA_ROOT/done
