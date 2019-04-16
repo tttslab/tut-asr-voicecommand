@@ -14,10 +14,10 @@ date
 start_time=`date +%s`
 
 
-./train.sh $MODEL_DIR $DATA_ROOT train1.txt >& train.log
-#./train.sh $MODEL_DIR $DATA_ROOT train20.txt >& train.log
-#./train.sh $MODEL_DIR $DATA_ROOT train60.txt >& train.log
-#./train.sh $MODEL_DIR $DATA_ROOT train.txt >& train.log
+./train.sh $MODEL_DIR $DATA_ROOT train1p.txt >& train.log
+#./train.sh $MODEL_DIR $DATA_ROOT train20p.txt >& train.log
+#./train.sh $MODEL_DIR $DATA_ROOT train60p.txt >& train.log
+#./train.sh $MODEL_DIR $DATA_ROOT train100p.txt >& train.log
 
 end_time=`date +%s`
 time=$((end_time - start_time))

@@ -19,8 +19,9 @@ awk 'NR%10==0' $DATA_ROOT/valid.txt > $DATA_ROOT/valid10.txt
 
 #shuffle and separate training file list
 cat $DATA_ROOT/train.txt | shuf -o $DATA_ROOT/train.txt
-head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/100)) $DATA_ROOT/train.txt > $DATA_ROOT/train1.txt
-head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train20.txt
-head -n $((3*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train60.txt
+head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/100)) $DATA_ROOT/train.txt > $DATA_ROOT/train1p.txt
+head -n $((1*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train20p.txt
+head -n $((3*`cat $DATA_ROOT/train.txt | wc -l`/5)) $DATA_ROOT/train.txt > $DATA_ROOT/train60p.txt
+mv $DATA_ROOT/train.txt $DATA_ROOT/train100p.txt
 
 touch $DATA_ROOT/done
