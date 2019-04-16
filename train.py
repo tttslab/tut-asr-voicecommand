@@ -8,6 +8,7 @@ import sys
 import os
 import logging
 import argparse
+import matplotlib.pyplot as plt
 
 logging.basicConfig(level=logging.INFO)
 
@@ -62,6 +63,8 @@ logging.info('Use cmvn: {}'.format(USE_CMVN))
 now_epoch   = 1
 total_num   = 0 # total number of used data
 correct_num = 0 # number of corrected prediction
+acc_plt = []
+epoch_plt = []
 for iteration in range(1, MAX_ITERATION+1):
     model.train() # train the model
     inputs, labels, lengths, epoch = next(batch_train) # generate next batch
@@ -105,11 +108,22 @@ for iteration in range(1, MAX_ITERATION+1):
                 correct_num += torch.bincount(torch.abs(torch.argmax(outputs, dim=1) - labels))[0]
                 if epoch == now_epoch: break
         logging.info('validation_accuracy: {:.04f}'.format(correct_num.float() / total_num))
+        acc_plt.append(float("{:.04f}".format(correct_num.float() / total_num)))
+        epoch_plt.append(now_epoch-1)
+        #logging.info(acc_plt)
+        #logging.info(epoch_plt)
         correct_num = 0
         total_num   = 0
 
     if MAX_EPOCH < now_epoch:
         break
+
+# plot graph epoch-accuracy.jpg
+# this shows how accuracy improved as training goes
+plt.plot(epoch_plt, acc_plt, "ro-")
+plt.xlabel("epoch number")
+plt.ylabel("accuracy")
+plt.savefig("epoch-accuracy.jpg")
 
 logging.info('done')
 torch.save(model.state_dict(), SAVE_FILE) # save trained model
