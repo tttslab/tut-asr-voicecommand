@@ -8,6 +8,8 @@ import sys
 import os
 import logging
 import argparse
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 logging.basicConfig(level=logging.INFO)
