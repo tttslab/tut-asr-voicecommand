@@ -25,7 +25,7 @@ parser.add_argument('-x', '--xvalue', type=float, nargs='+', required=True)
 parser.add_argument('-y', '--yvalue', type=float, nargs='+', required=True)
 args = parser.parse_args()
 
-print(len(args.xvalue))
+# print(len(args.xvalue))
 if len(args.xvalue) != len(args.yvalue):
     print("invalid inputs: num_x must equal to num_y")
     sys.exit()
