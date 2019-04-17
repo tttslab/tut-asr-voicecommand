@@ -7,4 +7,4 @@
 # ./mkgrapsh.sh 'data(%)' '20 40 60 80' 'accuracy(%)' '56.4 60.8 78.5 92.5' 'result.png'
 
 export PATH="/gs/hs0/tga-egliteracy/egs/e2e-asr/miniconda3/envs/mnist/bin:$PATH"
-python mkgraph.py -xl $1 -x $2 -yl $3 -y $4 -f $5
+python mkgraph.py -xl "$1" -x $2 -yl "$3" -y $4 -f "$5"
