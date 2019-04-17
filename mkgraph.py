@@ -3,7 +3,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import argparse
 
-''' this is a simple script for graph making
+''' this is a simple script for graph making, wrote by peng
 
 usage:
 python mkgraph.py -xl 'xlabel_name' -x x1 x2 ... xn -yl 'ylabel_name' -y y1 y2 ... yn -f 'save_file_name'
@@ -13,7 +13,7 @@ python mkgraph.py --xlabel 'xlabel_name' --xvalue x1 x2 ... xn --ylabel 'ylabel_
 argument order can be changed
 
 example
-python mkgraph.py -xl 'train(%)' -x 40 50 60 -yl 'eval accuracy(%)' -y 67.5 78.0 88.5 -f result.jpg
+python mkgraph.py -xl 'train(%)' -x 40 50 60 -yl 'eval accuracy(%)' -y 67.5 78.0 88.5 -f result.png
 
 '''
 
