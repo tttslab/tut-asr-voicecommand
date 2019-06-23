@@ -5,6 +5,8 @@ import re
 import hashlib
 import logging
 import argparse
+import pickle
+import soundfile as sf
 
 logging.basicConfig(level=logging.INFO)
 
@@ -80,24 +82,29 @@ os.makedirs(mfccdir, exist_ok=True)
 training_list   = open(txtdir+'train.txt',   'a')
 testing_list    = open(txtdir+'eval.txt',    'a')
 validation_list = open(txtdir+'valid.txt',   'a')
+result = {}
+
+if os.path.exists(mfccdir+'mfcc.pkl'):
+    logging.info('mfcc data is already prepared')
+    exit()
+
 for command in datalist:
-    if os.path.exists(mfccdir+command):     # check if data exist. if true, skip feature generation, 
-        logging.info(command+' data is already prepared')
-    else:
-        logging.info('Processing `'+command+'`... ')
-        os.makedirs(mfccdir+command)        
-        for wavfile in os.listdir(wavedir+command):
-            audio, sr = librosa.load(wavedir+command+'/'+wavfile, sr=SAMPLING_RATE)  # load wav file and get its sampling rate
-            mfcc      = librosa.feature.mfcc(audio, sr=SAMPLING_RATE, n_mfcc=MFCC_DIM, n_fft=400, hop_length=160)  # extract mfcc feature 
-            mfcc      = np.asarray(mfcc, dtype=np.float32)  # change format to np.float32
-            np.save(mfccdir+command+'/'+wavfile[:-4]+'.npy', mfcc.T)  # save mfcc features
-            partition = which_set(wavfile, 10, 10)  # divide to "training", "validation", "testing" 3 parts
-            if partition == 'training':
-                training_list.write(command+'/'+wavfile[:-4]+'.npy\n')
-            if partition == 'testing':
-                testing_list.write(command+'/'+wavfile[:-4]+'.npy\n')
-            if partition == 'validation':
-                validation_list.write(command+'/'+wavfile[:-4]+'.npy\n')
+    logging.info('Processing `'+command+'`... ')
+    for wavfile in os.listdir(wavedir+command):
+        audio, sr = sf.read(wavedir+command+'/'+wavfile)
+        mfcc      = librosa.feature.mfcc(audio, sr=SAMPLING_RATE, n_mfcc=MFCC_DIM, n_fft=400, hop_length=160)  # extract mfcc feature 
+        mfcc      = np.asarray(mfcc, dtype=np.float32)  # change format to np.float32
+        filename = mfccdir+command+'/'+wavfile[:-4]+'.npy'
+        result[filename] = mfcc.T
+        partition = which_set(wavfile, 10, 10)  # divide to "training", "validation", "testing" 3 parts
+        if partition == 'training':
+            training_list.write(command+'/'+wavfile[:-4]+'.npy\n')
+        if partition == 'testing':
+            testing_list.write(command+'/'+wavfile[:-4]+'.npy\n')
+        if partition == 'validation':
+            validation_list.write(command+'/'+wavfile[:-4]+'.npy\n')
+with open(mfccdir+'mfcc.pkl', 'wb') as f:
+    pickle.dump(result, f)
 training_list.close()
 testing_list.close()
 validation_list.close()
