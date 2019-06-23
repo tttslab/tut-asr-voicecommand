@@ -28,7 +28,7 @@ def Batch_generator(mfcc_root, dataset, batch_size): # data batch generator
             mfcc_dict = pickle.load(f)
 
     datalist_txt = open(dataset, 'r')
-    OUTDIR = mfcc_root + '/'
+    #OUTDIR = mfcc_root + '/'
 
     datalist      = datalist_txt.read().strip().split('\n')
     shuffled_data = random.sample(datalist, len(datalist))
@@ -43,7 +43,7 @@ def Batch_generator(mfcc_root, dataset, batch_size): # data batch generator
         for i in range(batch_size):
             sample  = shuffled_data.pop() # pop data from shuffled dataset
             label   = sample.split('/')[0]
-            mfcc    = mfcc_dict[OUTDIR + sample]
+            mfcc    = mfcc_dict[sample]
             MAX_LEN = len(mfcc) if MAX_LEN < len(mfcc) else MAX_LEN # find max len in a batch
             index   = insert_index_descending_order(len(mfcc), length_batch) # insert data to get the decending sequence (for latter pack_padded_sequence)
             if i == 0:

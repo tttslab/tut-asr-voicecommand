@@ -94,7 +94,7 @@ for command in datalist:
         audio, sr = sf.read(wavedir+command+'/'+wavfile)
         mfcc      = librosa.feature.mfcc(audio, sr=SAMPLING_RATE, n_mfcc=MFCC_DIM, n_fft=400, hop_length=160)  # extract mfcc feature 
         mfcc      = np.asarray(mfcc, dtype=np.float32)  # change format to np.float32
-        filename = mfccdir+command+'/'+wavfile[:-4]+'.npy'
+        filename = command+'/'+wavfile[:-4]+'.npy'
         result[filename] = mfcc.T
         partition = which_set(wavfile, 10, 10)  # divide to "training", "validation", "testing" 3 parts
         if partition == 'training':
