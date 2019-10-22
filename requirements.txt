@@ -5,7 +5,7 @@ librosa==0.6.2
 llvmlite==0.27.0
 numba==0.42.0
 numpy==1.16.0
-Pillow==5.4.1
+Pillow==6.2.0
 resampy==0.2.1
 scikit-learn==0.20.2
 scipy==1.2.0
