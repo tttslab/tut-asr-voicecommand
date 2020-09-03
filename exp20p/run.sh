@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #DATA_ROOT=data
-DATA_ROOT=/gs/hs0/tga-egliteracy/data/tut-asr-voicecommand/data
+DATA_ROOT=/gs/hs0/tga-tslecture/data/tut-asr-voicecommand/data
 MODEL_DIR=model
 
 echo 'start preparing'
