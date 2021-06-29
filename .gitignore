@@ -1,0 +1,5 @@
+data/
+model/
+epoch-accuracy.jpg
+score.txt
+train.time.log
